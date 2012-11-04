@@ -99,11 +99,18 @@ class YumUpoidBase(yum.YumBase):
 
 
     def getPackage(self, package_name, offline=False):
+        """ Gets package info for given package_name.
+            Returns all installed versions for given package.
+            """
         if offline:
             self.conf.cache = 1
         return self.doPackageLists('installed', ['name', package_name]).installed
 
     def getPackages(self, package_names, offline=False):
+        """ Searches for installed packages matching their names
+            to the ones listed in package_names.
+            Returns dict formatted as {'pkg_name':[found package versions list]}.
+            """
         if offline:
             self.conf.cache = 1
         names = [part for name in package_names for part in ('name', name)]
