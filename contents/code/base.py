@@ -1,3 +1,7 @@
+### YumUpoid - KDE Plasmoid listing package updates available in yum
+### Copyright (C) 2012 Queria Sa-Tas
+### See README.rst or COPYING files for more information.
+
 import logging
 import yum
 import yum.misc
