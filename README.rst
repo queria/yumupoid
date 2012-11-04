@@ -1,31 +1,41 @@
 YumUpoid
 ========
-*YUM Update Plasmoid*: KDE Plasmoid listing package updates available in yum.
-Something like ``yum check-update`` does but stays on your KDE desktop/dashboard.
+| *YUM Update Plasmoid*: KDE Plasmoid listing package updates available in yum. 
+| Something like ``yum check-update`` does but stays on your KDE desktop/dashboard.
 
-Developed and tested on Fedora Linux.
-Should also work with other distributions where yum is used (please report).
+| Developed and tested on Fedora Linux.
+| Should also work with other distributions where yum is used (please report).
 
 Installation
 ============
+
 - Getting sources::
+
   $ cd ~/
   $ git clone https://github.com/queria/yumupoid.git
+
 - Then you can try running it with::
+
   $ plasmoidviewer ~/yumupoid
+
 - Or install it using::
+
   $ cd ~/yumupoid
   $ zip -r ../yumupoid.zip .
   $ plasmapkg -i ../yumupoid.zip
+
 - And maybe later uninstall it::
+
   $ plasmapkg -r yumupoid
+
+
 
 Author
 ======
-Originaly created by Queria Sa-Tas <public@sa-tas.net> at end of 2012
+Originaly created by Queria Sa-Tas <public@sa-tas.net> at end of 2012.
 
-Some parts of YumUpoid are inspired by or directly taken
-from python sources of yum-cli_ and it should be
+Some parts of YumUpoid are *inspired by* or *directly taken
+from* python sources of yum-cli_ and it should be
 highlighted in their comment/docstring.
 
 .. _yum-cli: http://yum.baseurl.org
