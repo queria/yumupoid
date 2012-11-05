@@ -98,7 +98,8 @@ class YumUpoidBase(yum.YumBase):
                 'obsoletes': self.doPackageLists('obsoletes').obsoletes,
                 'installed': {}
                 }
-        res['installed'] = self._fetch_installed(res['updates'])
+        if res['updates']:
+            res['installed'] = self._fetch_installed(res['updates'])
         return res
 
 
