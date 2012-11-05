@@ -164,9 +164,9 @@ class YumUpoid(YumUpoidGui,plasmascript.Applet):
         now = datetime.now()
         nxt = self.next_check
         if nxt.date() == now.date():
-            return "{0}:{1}".format( nxt.hour, nxt.minute )
+            return "{0:02}:{1:02}".format( nxt.hour, nxt.minute )
         else:
-            return "{0}.{1}. {2}:{3}".format(
+            return "{0}.{1}. {2:02}:{3:02}".format(
                     nxt.day,
                     nxt.month,
                     nxt.hour,
