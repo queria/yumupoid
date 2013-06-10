@@ -2,8 +2,10 @@
 ### Copyright (C) 2012 Queria Sa-Tas
 ### See README.rst or COPYING files for more information.
 
+from __future__ import print_function
 from datetime import timedelta, datetime
 from base import YumUpoidBase
+from pkg_resources import parse_version
 from PyQt4.QtCore import *
 from PyQt4.QtGui import QGraphicsLinearLayout
 #                             from PyQt4.QtGui import *
@@ -54,6 +56,23 @@ class YumUpoidGui(object):
                 ', '.join(old_version),
                 change_symbol,
                 new_version)
+
+    def split_updates(self, updates, installed):
+        splitted = {'updates': [], 'downgrades': [], 'repacks': []}
+        for pkg in updates:
+            change = -9999
+            for old in (installed[pkg.name] or []):
+                change = max(change,
+                             cmp(parse_version(pkg.version),
+                                 parse_version(old.version)))
+            if change == -1:
+                splitted['downgrades'].append(pkg)
+            if change == 0:
+                splitted['repacks'].append(pkg)
+            else:
+                splitted['updates'].append(pkg)
+        return splitted
+
 
 class YumUpoid(YumUpoidGui,plasmascript.Applet):
 
@@ -180,14 +199,29 @@ class YumUpoidCli(YumUpoidGui):
         YumUpoidGui.__init__(self)
 
     def show_updates(self):
-        updates = []
         packages = self.yumGetUpdates()
-        updates = [ self.format_update(
-                    pkg,
-                    packages['installed'][pkg.name])
-                for pkg in packages['updates']]
-        updates.sort()
-        print("\n".join(updates))
+
+        if packages['obsoletes']:
+            obsolete = [package.name for package in packages['obsoletes']]
+            obsolete.sort()
+            print("[OBSO] ", end='')
+            print("\n[OBSO] ".join(obsolete))
+
+        changed = self.split_updates(
+            packages['updates'], packages['installed'])
+        categories = {
+            'DOWN': 'Downgrades',
+            'UPDT': 'Updates',
+            'RPCK': 'Repacks'}
+        for label, change in categories.iteritems():
+            chid = change.lower()
+            if changed[chid]:
+                changed[chid] = [self.format_update(
+                    pkg, packages['installed'][pkg.name])
+                    for pkg in changed[chid]]
+                changed[chid].sort()
+                print('[%s] ' % label, end='')
+                print(('\n[%s] ' % label).join(changed[chid]))
 
     def show_package(self):
         pkg = YumUpoidBase().getPackages(['opera'])
@@ -202,4 +236,3 @@ class YumUpoidCli(YumUpoidGui):
     def run(self):
         self.show_updates()
         #self.show_package()
-
